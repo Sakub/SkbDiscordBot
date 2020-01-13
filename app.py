@@ -24,10 +24,12 @@ async def greet(ctx):
 
 @bot.command()
 async def users(ctx):
+    listOfUsers = ''
     guild = discord.utils.find(lambda g: g.name==Config.guildName(), bot.guilds)
     await ctx.send('```List of users:```')
     for index, member in enumerate(guild.members, start=1):
-        await ctx.send(f'```{index}. {member}```')
+        listOfUsers += f'```{index}. {member} \n```'
+    await ctx.send(listOfUsers)
 
 @bot.command(pass_context = True)
 async def bye(ctx):
@@ -35,16 +37,19 @@ async def bye(ctx):
     await ctx.send(f'Bye {user}!')
 
 @bot.command()
+@commands.has_role('Admin')
 async def load(ctx, extension):
     bot.load_extension(f'cogs.{extension}')
     await ctx.send('Extension loaded')
 
 @bot.command()
+@commands.has_role('Admin')
 async def unload(ctx, extension):
     bot.unload_extension(f'cogs.{extension}')
     await ctx.send('Extension unloaded')
 
 @bot.command()
+@commands.has_role('Admin')
 async def reload(ctx, extension):
     bot.unload_extension(f'cogs.{extension}')
     bot.load_extension(f'cogs.{extension}')

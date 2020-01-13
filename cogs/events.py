@@ -27,6 +27,9 @@ class Events(commands.Cog):
     async def on_member_remove(self, member):
         print(f'{member} has left a server!')
 
+    @commands.Cog.listener()
+    async def on_message(self, message):
+        print(f'{message.author} has sent a message! Content: {message.content}')
 
 def setup(client):
     client.add_cog(Events(client))
