@@ -5,6 +5,8 @@ import random
 import os
 bot = commands.Bot(command_prefix='!')
 
+
+
 @bot.command()
 async def clear(ctx, amount = 3):
     try:
@@ -42,11 +44,21 @@ async def load(ctx, extension):
     bot.load_extension(f'cogs.{extension}')
     await ctx.send('Extension loaded')
 
+@load.error
+async def load_error(ctx, error):
+    if isinstance(error, commands.CheckFailure):
+        await ctx.send('You are not allowed to do this!')
+
 @bot.command()
 @commands.has_role('Admin')
 async def unload(ctx, extension):
     bot.unload_extension(f'cogs.{extension}')
     await ctx.send('Extension unloaded')
+
+@unload.error
+async def unload_error(ctx, error):
+    if isinstance(error, commands.CheckFailure):
+        await ctx.send('You are not allowed to do this!')
 
 @bot.command()
 @commands.has_role('Admin')
@@ -54,6 +66,11 @@ async def reload(ctx, extension):
     bot.unload_extension(f'cogs.{extension}')
     bot.load_extension(f'cogs.{extension}')
     await ctx.send('Extension reloaded')
+
+@reload.error
+async def reload_error(ctx, error):
+    if isinstance(error, commands.CheckFailure):
+        await ctx.send('You are not allowed to do this!')
 
 
 for filename in os.listdir(Config.cogsPath()):
