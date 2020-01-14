@@ -1,4 +1,5 @@
 from dotenv import load_dotenv
+import discord
 import os
 class Config:
     
@@ -31,3 +32,7 @@ class Config:
     def headsOrTails():
         itemList = ['heads', 'tails']
         return itemList
+
+    def botStatus():
+        status = discord.Game('playing with the API')
+        return status

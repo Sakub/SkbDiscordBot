@@ -10,6 +10,7 @@ class Events(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         print(f'Logged as {self.client.user}')
+        await self.client.change_presence(status=discord.Status.online, activity=Config.botStatus())
 
     @commands.Cog.listener()
     async def on_typing(self, channel, user, when):
