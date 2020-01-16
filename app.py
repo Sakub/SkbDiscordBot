@@ -6,19 +6,6 @@ import os
 bot = commands.Bot(command_prefix='!')
 
 
-
-@bot.command()
-async def clear(ctx, amount = 3):
-    try:
-        if amount > 50:
-            await ctx.send('Number of messages to clear is too high!')
-        elif amount < 1:
-            await ctx.send(f"Can't clear {amount} message(s)")
-        else:
-            await ctx.channel.purge(limit=amount)
-    except Exception as e:
-        await ctx.send(f'Something went wrong! Error message: {e}')
-
 @bot.command(pass_context=True)
 async def greet(ctx):
     user = ctx.message.author.name

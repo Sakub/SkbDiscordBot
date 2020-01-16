@@ -118,6 +118,24 @@ class Moderation(commands.Cog):
         if isinstance(error, commands.CheckFailure):
             await ctx.send('You are not allowed to do this!')
 
+    @commands.command()
+    @commands.has_role('Admin')
+    async def clear(self, ctx, amount = 3):
+        try:
+            if amount > 50:
+                await ctx.send('Number of messages to clear is too high!')
+            elif amount < 1:
+                await ctx.send(f"Can't clear {amount} message(s)")
+            else:
+                await ctx.channel.purge(limit=amount)
+        except Exception as e:
+            await ctx.send(f'Something went wrong!')
+
+    @clear.error
+    async def clear_error(self, ctx, error):
+        if isinstance(error, commands.CheckFailure):
+            await ctx.send('You are not allowed to do this!')
+
 
 def setup(client):
     client.add_cog(Moderation(client))
