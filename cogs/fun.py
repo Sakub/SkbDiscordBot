@@ -32,5 +32,10 @@ class Fun(commands.Cog):
                         await ctx.send(submission.url)
         except:
             await ctx.send(f'Error! Subreddit: {subr} not found!')
+    
+    @commands.command(aliases=['rP'])
+    async def ratePerson(self, ctx, *, person):
+        author = ctx.message.author.mention
+        await ctx.send(f"{author}, I'd give {person} a {Config.ratePersonRandomNum()}/10")
 def setup(client):
     client.add_cog(Fun(client))

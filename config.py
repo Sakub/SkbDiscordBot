@@ -1,6 +1,7 @@
 from dotenv import load_dotenv
 import discord
 import os
+import random
 class Config:
     
     def token():
@@ -36,6 +37,19 @@ class Config:
     def botStatus():
         status = discord.Game('playing with the API')
         return status
+    
+    def ratePersonRandomNum():
+        MIN = 0
+        MAX = 10
+        randomNum = random.randint(MIN, MAX)
+        return randomNum
+
+
+    def permissionErrorMessage():
+        message ='you are not allowed to do this!'
+
+        return message
+
 
     def redditClient():
         REDDIT_ID = os.getenv('REDDIT_CLIENT_ID')

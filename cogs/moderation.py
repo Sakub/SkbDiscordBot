@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 from discord.utils import get
+from config import Config
 
 class Moderation(commands.Cog):
 
@@ -20,7 +21,7 @@ class Moderation(commands.Cog):
     @kick.error
     async def kick_error(self, ctx, error):
         if isinstance(error, commands.CheckFailure):
-            await ctx.send('You are not allowed to do this!')
+            await ctx.send(f'{self.permissionErrorMessage(ctx)}')
 
     
 
@@ -37,7 +38,7 @@ class Moderation(commands.Cog):
     @ban.error
     async def ban_error(self, ctx, error):
         if isinstance(error, commands.CheckFailure):
-            await ctx.send('You are not allowed to do this!')
+            await ctx.send(f'{self.permissionErrorMessage(ctx)}')
 
 
     @commands.command(pass_context = True)
@@ -61,7 +62,7 @@ class Moderation(commands.Cog):
     @unban.error
     async def unban_error(self, ctx, error):
         if isinstance(error, commands.CheckFailure):
-            await ctx.send('You are not allowed to do this!')
+            await ctx.send(f'{self.permissionErrorMessage(ctx)}')
 
     @commands.command(pass_context = True)
     @commands.has_role('Admin')
@@ -70,14 +71,14 @@ class Moderation(commands.Cog):
         try:
             role = discord.utils.get(user.guild.roles, name='Muted')
             await member.add_roles(role)
-            await ctx.send(f'{member} has been muted! Reason: {reason}')
+            await ctx.send(f'{member.mention} has been muted! Reason: {reason}')
         except Exception as e:
             await ctx.send(f'Something went wrong!')
         
     @mute.error
     async def mute_error(self, ctx, error):
         if isinstance(error, commands.CheckFailure):
-            await ctx.send('You are not allowed to do this!')
+            await ctx.send(f'{self.permissionErrorMessage(ctx)}')
 
     @commands.command(pass_context = True)
     @commands.has_role('Admin')
@@ -86,24 +87,24 @@ class Moderation(commands.Cog):
         try:
             role = discord.utils.get(user.guild.roles, name='Muted')
             await member.remove_roles(role)
-            await ctx.send(f'{member} has been unmuted!')
+            await ctx.send(f'{member.mention} has been unmuted!')
         except Exception as e:
             await ctx.send(f'Something went wrong!')
 
     @unmute.error
     async def unmute_error(self, ctx, error):
         if isinstance(error, commands.CheckFailure):
-            await ctx.send('You are not allowed to do this!')
+            await ctx.send(f'{self.permissionErrorMessage(ctx)}')
 
     @commands.command(pass_context = True)
     @commands.has_role('Admin')
     async def warn(self, ctx, member: discord.Member, *, reason = None):
-        await ctx.send(f'{member}! You have been warned! Reason: {reason}')
+        await ctx.send(f'{member.mention}! You have been warned! Reason: {reason}')
     
     @warn.error
     async def warn_error(self, ctx, error):
         if isinstance(error, commands.CheckFailure):
-            await ctx.send('You are not allowed to do this!')
+            await ctx.send(f'{self.permissionErrorMessage(ctx)}')
 
 
 
@@ -116,7 +117,7 @@ class Moderation(commands.Cog):
     @announc.error
     async def announc_error(self, ctx, error):
         if isinstance(error, commands.CheckFailure):
-            await ctx.send('You are not allowed to do this!')
+            await ctx.send(f'{self.permissionErrorMessage(ctx)}')
 
     @commands.command()
     @commands.has_role('Admin')
@@ -134,7 +135,12 @@ class Moderation(commands.Cog):
     @clear.error
     async def clear_error(self, ctx, error):
         if isinstance(error, commands.CheckFailure):
-            await ctx.send('You are not allowed to do this!')
+            await ctx.send(f'{self.permissionErrorMessage(ctx)}')
+
+    def permissionErrorMessage(self, ctx):
+        author = ctx.message.author.mention
+        message = f'{author} {Config.permissionErrorMessage()}'
+        return message
 
 
 def setup(client):

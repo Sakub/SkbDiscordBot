@@ -34,7 +34,7 @@ async def load(ctx, extension):
 @load.error
 async def load_error(ctx, error):
     if isinstance(error, commands.CheckFailure):
-        await ctx.send('You are not allowed to do this!')
+        await ctx.send(permissionErrorMessage(ctx))
 
 @bot.command()
 @commands.has_role('Admin')
@@ -45,7 +45,7 @@ async def unload(ctx, extension):
 @unload.error
 async def unload_error(ctx, error):
     if isinstance(error, commands.CheckFailure):
-        await ctx.send('You are not allowed to do this!')
+        await ctx.send(permissionErrorMessage(ctx))
 
 @bot.command()
 @commands.has_role('Admin')
@@ -57,7 +57,13 @@ async def reload(ctx, extension):
 @reload.error
 async def reload_error(ctx, error):
     if isinstance(error, commands.CheckFailure):
-        await ctx.send('You are not allowed to do this!')
+        await ctx.send(permissionErrorMessage(ctx))
+
+def permissionErrorMessage(ctx):
+    author = ctx.message.author.mention
+
+    message = f'{author}! {Config.permissionErrorMessage()}'
+    return message
 
 
 for filename in os.listdir(Config.cogsPath()):
