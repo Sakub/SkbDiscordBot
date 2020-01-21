@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 import random
 from config import Config
+import praw
 
 class Fun(commands.Cog):
     
@@ -37,5 +38,9 @@ class Fun(commands.Cog):
     async def ratePerson(self, ctx, *, person):
         author = ctx.message.author.mention
         await ctx.send(f"{author}, I'd give {person} a {Config.ratePersonRandomNum()}/10")
+
+    @commands.command()
+    async def joke(self, ctx):
+        await ctx.send(random.choice(Config.loadJokes()))
 def setup(client):
     client.add_cog(Fun(client))

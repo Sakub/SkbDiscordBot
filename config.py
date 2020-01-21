@@ -2,6 +2,7 @@ from dotenv import load_dotenv
 import discord
 import os
 import random
+import praw
 class Config:
     
     def token():
@@ -59,3 +60,17 @@ class Config:
         REDDIT_AGENT = os.getenv('REDDIT_AGENT')
         reddit = praw.Reddit(client_id=REDDIT_ID, client_secret=REDDIT_SECRET, username=REDDIT_USERNAME, password=REDDIT_PASSWORD, user_agent=REDDIT_AGENT)
         return reddit
+
+    def jokeSubreddit():
+        subreddit = 'Jokes'
+        return subreddit
+
+    def loadJokes():
+        listOfJokes = []
+        subr = Config.redditClient().subreddit(Config.jokeSubreddit())
+        hotSubr = subr.hot(limit = 100)
+        for submission in hotSubr:
+            if not submission.stickied:
+                if not submission.url.endswith('.jpg') or not submission.url.endswith('.png'):
+                    listOfJokes.append(submission.selftext)
+        return listOfJokes
